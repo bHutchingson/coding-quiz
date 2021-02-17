@@ -1,0 +1,45 @@
+a {
+    text-decoration: none;
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+li {
+    display: flex;
+}
+
+.btn {
+    color: white;
+    background-color: purple;
+    border: 1px solid black;
+    padding: 3px;
+    border-radius: 5px;
+
+}
+
+.btn:hover {
+    opacity: 0.6;
+}
+
+section {
+    text-align: center;
+    margin: 0 50px 0 50px;
+}
+
+h1 {
+    margin: ;
+}
+
+.questions {
+    display: flex;
+    flex-direction: column;
+}
+
+p {
+    display: flex;
+    flex-direction: column;
+    
+}
