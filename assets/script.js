@@ -1,75 +1,109 @@
 let timer = document.querySelector(".timer");
-let question = document.querySelector("#question");
-let choices = document.querySelector("#choices");
+var question = $("#question");
+var choices = $("#choices");
 
-var startGame = document.querySelector(".start-btn");
-startGame.addEventListener("click", countDown);
+var startBtn = $("#start-btn");
+
+
+var heading = $('h1');
+var qDiv = $('.qDiv');
+
+var answers = $('.answers')
+
 
 //array storing objects with quiz questions and answers
 var quizQuestions = [
     {
-        question: "question 1",
+        question: "Commonly used data types DO NOT include:",
         answers: {
-            a: "1",
-            b: "2",
-            c: "3",
-            d: "4",
+            a: "strings",
+            b: "booleans",
+            c: "alerts",
+            d: "numbers",
         },
-        correctAnswer: ""
+        correctAnswer: "alerts"
     },
     {
-        question: "question 2",
+        question: "the condidtion in an if else statement is inclosed within:",
         answers: {
-            a: "",
-            b: "",
-            c: "",
-            d: "",
+            a: "quotes",
+            b: "curly brackets",
+            c: "parentheses",
+            d: "square brackets",
         },
-        correctAnswer: ""
+        correctAnswer: "parentheses"
     },
     {
-        question: "question 3",
+        question: "Arrays in Javascript can be used to store:",
         answers: {
-            a: "",
-            b: "",
-            c: "",
-            d: "",
+            a: "numbers and strings",
+            b: "other arrays",
+            c: "objects",
+            d: "all of the above",
         },
-        correctAnswer: ""
+        correctAnswer: "all of the above"
     },
     {
-        question: "q4",
+        question: "String values must be inclosed within when being assigned to a variable",
         answers: {
-            a: "",
-            b: "",
-            c: "",
-            d: "",
+            a: "commas",
+            b: "curly brackets",
+            c: "quotes",
+            d: "parentheses",
         },
-        correctAnswer: ""
+        correctAnswer: "quotes"
     },
     {
-        question: "q5",
+        question: "A very useful tool during development and debugging for printing content to the debugger is:",
         answers: {
-            a: "",
-            b: "",
-            c: "",
-            d: "",
+            a: "javascript",
+            b: "terminal",
+            c: "console.log",
+            d: "for loops",
         },
-        correctAnswer: ""
+        correctAnswer: "console.log"
     }
 ];
 
+var pos = 0;
+var currentQuestion = quizQuestions[pos].question;
+var chA = quizQuestions[pos].answers.a;
+var chB = quizQuestions[pos].answers.b;
+var chC = quizQuestions[pos].answers.c;
+var chD = quizQuestions[pos].answers.d;
 
-//Runs timer
-function countDown() {
-    var timeLeft = 60;
-    startGame.disabled = false;
-    showQuestions();
+console.log(pos);
+
+var timeLeft = 60;
+//Runs timer/ starts first question
+function startGame() {
+    
+    /* startGame.disabled = false; */
+    
+    /* callQuestions(); */
+    
+    heading.text(currentQuestion);
+    
+    //removes start button
+    startBtn.remove();
+
+    //removes rules
+    qDiv.text('');
+
+    console.log();
+
+    //displays question answers
+    qDiv.append("<button class='btn answers' value='a'>"+chA+"</button>");
+    qDiv.append("<button class='btn answers' value='b'>"+chB+"</button>");
+    qDiv.append("<button class='btn answers' value='c'>"+chC+"</button>");
+    qDiv.append("<button class='btn answers' value='d'>"+chD+"</button>");
+    
+    console.log(pos);
     
     var gameTimer = setInterval(function () {
     
         if (timeLeft > 1) {
-            timer.textContent = timeLeft + " seconds remaining";
+            timer.textContent = "timer: " + timeLeft;
             timeLeft--;
         } else {
             timer.textContent = 0;
@@ -80,47 +114,78 @@ function countDown() {
 
 
 
-function showQuestions() {
-    
-    var pos = 0;
-    /* if(pos >= quizQuestions.length){
-      question.innerHTML = "<h2>You got "+correct+" of "+questions.length+" questions correct</h2>";
-      get("test_status").innerHTML = "Test completed";
-      // resets the variable to allow users to restart the test
-      pos = 0;
-      correct = 0;
-      // stops rest of renderQuestion function running when test is completed
-      return false;
-    } */
-    
-    /* for (i=0; i <= quizQuestions.length; i++) {
-        pos += 1;  
-    } */
 
+/* function callQuestions() {
+    //displays current question
+    
+    header.text(currentQuestion);
+    
+    //removes start button
+    startBtn.remove();
+
+    //removes rules
+    qDiv.text('');
+
+    console.log();
+
+    //displays question answers
+    qDiv.append("<button class='btn answers' value='a'>"+chA+"</button>");
+    qDiv.append("<button class='btn answers' value='b'>"+chB+"</button>");
+    qDiv.append("<button class='btn answers' value='c'>"+chC+"</button>");
+    qDiv.append("<button class='btn answers' value='d'>"+chD+"</button>");
+    
     console.log(pos);
-
-    var currentQuestion = quizQuestions[pos].question;
-
-    chA = quizQuestions[pos].answers.a;
-    chB = quizQuestions[pos].answers.b;
-    chC = quizQuestions[pos].answers.c;
-    chD = quizQuestions[pos].answers.d;
     
-    
-    // display the question
-    question.innerHTML = currentQuestion;
-    // display the answer options
-    // the += appends to the data we started on the line above
-    /* Object.assign(choices.style, styles); */
-    
-
-
-    choices.innerHTML = "<button value='a'>"+chA+"</button>";
-    choices.innerHTML += "<button value='b'>"+chB+"</button>";
-    choices.innerHTML += "<button value='c'>"+chC+"</button>";
-    choices.innerHTML += "<button value='d'>"+chD+"</button>";
-    /* choices.innerHTML += "<label> <input type='radio' name='choices' value='B'> "+chB+"</label><br>";
-    choices.innerHTML += "<label> <input type='radio' name='choices' value='C'> "+chC+"</label><br><br>";
-    choices.innerHTML += "<label> <input type='radio' name='choices' value='C'> "+chD+"</label><br><br>"; */
-    
+  } */
+  
+  function checkAnswer(event) {
+    var chosenAnswer = event.target;
+    if (chosenAnswer.textContent === quizQuestions[pos].correctAnswer) {
+        qDiv.append("<p>Correct!</p>");
+        setTimeout(nextQuestion, 1000);
+    } else {
+        qDiv.append("<p>Incorrect!</p>");
+        timeLeft -= 10;
+        setTimeout(nextQuestion, 1000);
+    }
   }
+
+  function nextQuestion() {
+    if (pos === quizQuestions.length - 1 || timeLeft === 0) {
+        gameOver();
+    } else {
+        pos++;
+
+        currentQuestion = quizQuestions[pos].question;
+        chA = quizQuestions[pos].answers.a;
+        chB = quizQuestions[pos].answers.b;
+        chC = quizQuestions[pos].answers.c;
+        chD = quizQuestions[pos].answers.d;
+
+        heading.text('');
+        qDiv.text('');
+        console.log(currentQuestion);
+        heading.text(currentQuestion);
+        
+        qDiv.append("<button class='btn answers' value='a'>"+chA+"</button>");
+        qDiv.append("<button class='btn answers' value='b'>"+chB+"</button>");
+        qDiv.append("<button class='btn answers' value='c'>"+chC+"</button>");
+        qDiv.append("<button class='btn answers' value='d'>"+chD+"</button>");
+    }
+   
+    
+    
+
+    console.log(pos); 
+    
+};
+
+function gameOver() {
+    heading.text('');
+    qDiv.text('');
+
+    heading.text("All done!")
+}
+
+startBtn.on("click", startGame);
+qDiv.on('click', checkAnswer);
