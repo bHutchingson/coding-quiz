@@ -38,6 +38,16 @@ h1 {
     flex-direction: column;
 }
 
-.answers {
-    
+.text-box {
+    width: 50px;
+}
+.game-over {
+    display: flex;
+    flex-direction: column;
+}
+.score-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
 }

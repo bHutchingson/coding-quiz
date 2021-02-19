@@ -5,6 +5,7 @@ var choices = $("#choices");
 var startBtn = $("#start-btn");
 
 
+
 var heading = $('h1');
 var qDiv = $('.qDiv');
 
@@ -78,7 +79,7 @@ var timeLeft = 60;
 //Runs timer/ starts first question
 function startGame() {
     
-    /* startGame.disabled = false; */
+
     
     /* callQuestions(); */
     
@@ -98,45 +99,24 @@ function startGame() {
     qDiv.append("<button class='btn answers' value='c'>"+chC+"</button>");
     qDiv.append("<button class='btn answers' value='d'>"+chD+"</button>");
     
-    console.log(pos);
     
-    var gameTimer = setInterval(function () {
+    /* gameTimer(); */
+
     
-        if (timeLeft > 1) {
-            timer.textContent = "timer: " + timeLeft;
-            timeLeft--;
-        } else {
-            timer.textContent = 0;
-            clearInterval(gameTimer);
-        }
-    }, 1000);
 }
 
-
-
-
-/* function callQuestions() {
-    //displays current question
+var gameTimer = setInterval(function () {
     
-    header.text(currentQuestion);
-    
-    //removes start button
-    startBtn.remove();
+    if (timeLeft > 1) {
+        timer.textContent = "timer: " + timeLeft;
+        timeLeft--;
+    } else {
+        timer.textContent = 0;
+        clearInterval(gameTimer);
+    }
+}, 1000);
 
-    //removes rules
-    qDiv.text('');
 
-    console.log();
-
-    //displays question answers
-    qDiv.append("<button class='btn answers' value='a'>"+chA+"</button>");
-    qDiv.append("<button class='btn answers' value='b'>"+chB+"</button>");
-    qDiv.append("<button class='btn answers' value='c'>"+chC+"</button>");
-    qDiv.append("<button class='btn answers' value='d'>"+chD+"</button>");
-    
-    console.log(pos);
-    
-  } */
   
   function checkAnswer(event) {
     var chosenAnswer = event.target;
@@ -153,6 +133,7 @@ function startGame() {
   function nextQuestion() {
     if (pos === quizQuestions.length - 1 || timeLeft === 0) {
         gameOver();
+        stopCount();
     } else {
         pos++;
 
@@ -172,20 +153,42 @@ function startGame() {
         qDiv.append("<button class='btn answers' value='c'>"+chC+"</button>");
         qDiv.append("<button class='btn answers' value='d'>"+chD+"</button>");
     }
-   
-    
-    
 
     console.log(pos); 
     
 };
 
+function stopCount() {
+    clearInterval(gameTimer);
+};
+var submitScore = $("#submitScore");
+var submitDiv = $(".questions");
 function gameOver() {
     heading.text('');
-    qDiv.text('');
+    qDiv.remove();
 
+    /* var highScoreSubmit = $('<div>').addClass('score-page'); */
+    $('.questions').append(highScoreSubmit);
+    submitDiv.append(submitScoreBtn);
+    var submitScoreBtn = $('<button>').attr('id', 'submitScore').text("Submit").addClass("btn");
+    /* submitScoreBtn.text("Submit").addClass("btn"); */
     heading.text("All done!")
-}
+    submitDiv.append("Your final score is " + timeLeft).addClass('game-over');
+    
+    submitDiv.text("Enter Initials:").append('<input class="text-box game-over" type="textbox"/>')
+    
+    submitDiv.append(submitScoreBtn);
+};
 
+function highScores() {
+    localStorage.setItem("")
+    console.log("hello");
+    heading.text('');
+    highscoreSubmit.text('');
+
+    heading.text('High Scores');
+};
+
+submitScore.on("click", "#submitScore", highScores);
 startBtn.on("click", startGame);
 qDiv.on('click', checkAnswer);
