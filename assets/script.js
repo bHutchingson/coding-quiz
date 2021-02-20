@@ -10,7 +10,7 @@ var heading = $('h1');
 var qDiv = $('.qDiv');
 
 var answers = $('.answers')
-
+ 
 
 //array storing objects with quiz questions and answers
 var quizQuestions = [
@@ -161,34 +161,36 @@ var gameTimer = setInterval(function () {
 function stopCount() {
     clearInterval(gameTimer);
 };
-var submitScore = $("#submitScore");
+/* var submitScore = $("#submitScore"); */
 var submitDiv = $(".questions");
 function gameOver() {
     heading.text('');
     qDiv.remove();
 
     /* var highScoreSubmit = $('<div>').addClass('score-page'); */
-    $('.questions').append(highScoreSubmit);
+
     submitDiv.append(submitScoreBtn);
     var submitScoreBtn = $('<button>').attr('id', 'submitScore').text("Submit").addClass("btn");
     /* submitScoreBtn.text("Submit").addClass("btn"); */
-    heading.text("All done!")
-    submitDiv.append("Your final score is " + timeLeft).addClass('game-over');
-    
     submitDiv.text("Enter Initials:").append('<input class="text-box game-over" type="textbox"/>')
-    
     submitDiv.append(submitScoreBtn);
+    submitDiv.append("Your final score is " + timeLeft).addClass('game-over');
+    submitScoreBtn.on("click", saveHighScores);
+    heading.text("All done!")
+    
+    
+   /*  submitDiv.text("Enter Initials:").append('<input class="text-box game-over" type="textbox"/>')
+    submitDiv.append(submitScoreBtn); */
 };
 
-function highScores() {
-    localStorage.setItem("")
-    console.log("hello");
+function saveHighScores() {
+    localStorage.setItem("highScore", JSON.stringify( {"initials": "bjh", "score": timeLeft }));
+    submitDiv.text('');
     heading.text('');
-    highscoreSubmit.text('');
-
+    
     heading.text('High Scores');
 };
 
-submitScore.on("click", "#submitScore", highScores);
+
 startBtn.on("click", startGame);
 qDiv.on('click', checkAnswer);
