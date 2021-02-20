@@ -1,15 +1,18 @@
-let timer = document.querySelector(".timer");
+let timer = $(".timer");
 var question = $("#question");
 var choices = $("#choices");
 
 var startBtn = $("#start-btn");
 
-
+var highScoresList = $('#highScoresList')
 
 var heading = $('h1');
 var qDiv = $('.qDiv');
 
 var answers = $('.answers')
+
+var initials;
+var submitDiv = $(".questions");
  
 
 //array storing objects with quiz questions and answers
@@ -104,7 +107,7 @@ function startGame() {
 
     
 }
-
+//runs game timer
 var gameTimer = setInterval(function () {
     
     if (timeLeft > 1) {
@@ -117,7 +120,7 @@ var gameTimer = setInterval(function () {
 }, 1000);
 
 
-  
+  //checks if answers are correct
   function checkAnswer(event) {
     var chosenAnswer = event.target;
     if (chosenAnswer.textContent === quizQuestions[pos].correctAnswer) {
@@ -128,8 +131,9 @@ var gameTimer = setInterval(function () {
         timeLeft -= 10;
         setTimeout(nextQuestion, 1000);
     }
-  }
+  };
 
+  //goes to the next question once the previous question is answered
   function nextQuestion() {
     if (pos === quizQuestions.length - 1 || timeLeft === 0) {
         gameOver();
@@ -137,58 +141,83 @@ var gameTimer = setInterval(function () {
     } else {
         pos++;
 
+        //sets the pos to the next question and answers
         currentQuestion = quizQuestions[pos].question;
         chA = quizQuestions[pos].answers.a;
         chB = quizQuestions[pos].answers.b;
         chC = quizQuestions[pos].answers.c;
         chD = quizQuestions[pos].answers.d;
 
+        //clears previous question
         heading.text('');
         qDiv.text('');
-        console.log(currentQuestion);
+
+        //displays new question and answers
         heading.text(currentQuestion);
-        
         qDiv.append("<button class='btn answers' value='a'>"+chA+"</button>");
         qDiv.append("<button class='btn answers' value='b'>"+chB+"</button>");
         qDiv.append("<button class='btn answers' value='c'>"+chC+"</button>");
         qDiv.append("<button class='btn answers' value='d'>"+chD+"</button>");
     }
-
-    console.log(pos); 
-    
 };
 
+//ends game timer
 function stopCount() {
     clearInterval(gameTimer);
 };
-/* var submitScore = $("#submitScore"); */
-var submitDiv = $(".questions");
+
+//displays screen to record and save initials and score
 function gameOver() {
     heading.text('');
-    qDiv.remove();
+    qDiv.text('');
+    submitDiv.append(heading);
 
     /* var highScoreSubmit = $('<div>').addClass('score-page'); */
 
     submitDiv.append(submitScoreBtn);
     var submitScoreBtn = $('<button>').attr('id', 'submitScore').text("Submit").addClass("btn");
-    /* submitScoreBtn.text("Submit").addClass("btn"); */
-    submitDiv.text("Enter Initials:").append('<input class="text-box game-over" type="textbox"/>')
+    
+    submitDiv.text("Enter Initials:")/* .append('<input class="text-box game-over" type="textbox"/>') */
+    /* var initialsInput = submitDiv.append('<input class="text-box game-over" type="textbox"/>'); */
+
+    /* var initialsInput = $('<input/>');
+    initialsInput.attr({type: 'text', name: 'text', placeholder: 'initials'}).attr('id', 'initials-text'); */
+    var initialsInput = $('<input type="text"/>').attr('id', 'initials-text');
+
+    submitDiv.append(initialsInput);
     submitDiv.append(submitScoreBtn);
+    initials = $('initials-text').val();
     submitDiv.append("Your final score is " + timeLeft).addClass('game-over');
+    heading.text("All done!");
+    localStorage.setItem("score", timeLeft);
+    localStorage.setItem("initials", initials);
+    /* localStorage.setItem("highScore", JSON.stringify({"initials": initials, "score": timeLeft })); */
     submitScoreBtn.on("click", saveHighScores);
-    heading.text("All done!")
     
     
+
+   
    /*  submitDiv.text("Enter Initials:").append('<input class="text-box game-over" type="textbox"/>')
     submitDiv.append(submitScoreBtn); */
 };
 
-function saveHighScores() {
-    localStorage.setItem("highScore", JSON.stringify( {"initials": "bjh", "score": timeLeft }));
+//saves highscores
+function saveHighScores(event) {
+    event.preventDefault();
+    /* localStorage.setItem("highScore", JSON.stringify({"initials": initials, "score": timeLeft })); */
     submitDiv.text('');
     heading.text('');
-    
     heading.text('High Scores');
+    highScoreList = $('ol');
+    submitDiv.append(highScoreList);
+    var highScoreUser = $('li');
+    highScoreUser.text = (localStorage.getItem(initials) + localStorage.getItem(timeLeft));
+    var goBackBtn = $('<button>').attr('id', 'submitScore').text("Go Back").addClass("btn");
+    submitDiv.append(goBackBtn);
+    var clearHighScoresBtn = $('<button>').attr('id', 'submitScore').text("Clear Highscores").addClass("btn");
+    submitDiv.append(clearHighScoresBtn);
+    
+    
 };
 
 
